@@ -215,6 +215,7 @@ In 53 war das Lesen von Feld 2 auskommentiert, in 61 ist es aktiv (`61:popupFan:
 - Helligkeit (Feld 5): `disable` blendet aus, jeder andere Wert blendet ein. Der Schalterzustand spielt keine Rolle.
 - Farbtemperatur (Feld 6): Zahl blendet ein, `unknown` und `disable` blenden aus.
 - In 61 wird der Temperatur-Regler intern gespiegelt dargestellt, die Werte auf der Leitung bedeuten dasselbe wie in 53.
+- Der Fork sendet Farbtemperatur, Farbe und Effekt-Knopf auch bei ausgeschalteter Lampe, wie `ioBroker/NsPanelTs.ts` (Rolle `hue`, ab Zeile 11121). Das Original sendet dann `disable`. Bei ausgeschalteter Lampe steht in Feld 6 die zuletzt gesehene Reglerstellung oder 50.
 
 ## 6. Verhaltensänderungen ohne Bruch
 
