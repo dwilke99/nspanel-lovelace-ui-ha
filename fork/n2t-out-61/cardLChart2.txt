@@ -1,0 +1,50 @@
+Page cardLChart2
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Locked             : no
+        Swide up page ID   : disabled
+        Swide down page ID : disabled
+        Swide left page ID : disabled
+        Swide right page ID: disabled
+    
+Waveform s0
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+        Channel count    : 1
+    
+Slider h0
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+        Position         : 50
+        Upper range limit: 1000
+        Lower range limit: 0
+    
+Button b0
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+        State            : unpressed
+        Text             : newtxt
+        Max. Text Size   : 10
+    
+    Events
+        Touch Release Event
+            add 1,0,0
+            add 1,0,0
+            add 1,0,0
+            add 1,0,0
+            add 1,0,0
+            add 1,0,103
+            add 1,0,25
+            add 1,0,25
+            add 1,0,25
+            add 1,0,25
+            add 1,0,25
+        

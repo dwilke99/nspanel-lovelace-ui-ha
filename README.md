@@ -1,5 +1,12 @@
 # NSPanel Lovelace UI
 
+> [!WARNING]
+> **Personal fork, no support.** This repository is a personal fork of [joBr99/nspanel-lovelace-ui](https://github.com/joBr99/nspanel-lovelace-ui), maintained for a single panel. Its goal is to make the Home Assistant AppDaemon backend work with the newer 5.x display firmware from the [ioBroker project](https://github.com/ticaki/ioBroker.nspanel-lovelace-ui). There is no support, no release schedule and no guarantee that it works for you. If you want a maintained version, use the original repository.
+>
+> In HACS this fork appears as "NSPanel Lovelace UI Backend (Fork)" and has to be added as a custom repository (category AppDaemon). Do not install it alongside the original backend, both provide the same AppDaemon module.
+>
+> Everything below is the original README. Badges, links and the donation link refer to the original project. The license remains GPL-3.0.
+
 If you like this project consider buying me a pizza 🍕 <a href="https://paypal.me/joBr99" target="_blank"><img src="https://img.shields.io/static/v1?logo=paypal&label=&message=donate&color=slategrey"></a>
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
