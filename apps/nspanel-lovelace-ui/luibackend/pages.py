@@ -25,6 +25,8 @@ class LuiPagesGen(object):
         self._config = config
         self._locale  = config.get("locale")
         self._send_mqtt_msg = send_mqtt_msg
+        # last color temperature slider position per light, shown while it is off
+        self._last_color_temp = {}
 
     def get_entity_color(self, entity, ha_type=None, stateOverwrite=None, overwrite=None):
         if overwrite is not None:
@@ -900,6 +902,7 @@ class LuiPagesGen(object):
                 if color_temp := entity.attributes.get("color_temp_kelvin"):
                     # scale ha color temp range to 0-100
                     color_temp = int(scale(color_temp, (entity.attributes['max_color_temp_kelvin'], entity.attributes['min_color_temp_kelvin']),(0, 100)))
+                    self._last_color_temp[entity_id] = color_temp
                 else:
                     color_temp = "unknown"
             else:
@@ -909,6 +912,17 @@ class LuiPagesGen(object):
                 color = "enable"
             else:
                 color = "disable"
+            if "effect_list" in entity.attributes:
+                effect_supported = "enable"
+        else:
+            # light is off: still offer color temperature, color and effects, as
+            # the ioBroker backends do. Using one of them turns the light on.
+            # Home Assistant reports no color temperature while a light is off,
+            # so show the last known slider position or the middle.
+            if "color_temp" in supported_color_modes:
+                color_temp = self._last_color_temp.get(entity_id, 50)
+            if any(item in ["xy", "rgb", "rgbw", "hs"] for item in supported_color_modes):
+                color = "enable"
             if "effect_list" in entity.attributes:
                 effect_supported = "enable"
         color_translation      = "Color"

@@ -23,6 +23,7 @@ Dirk betreibt ein Sonoff NSPanel (EU-Modell) mit Tasmota und der Oberfläche „
 - **Ziel-Firmware ist 61** (Release 5.1.1 der ioBroker-Linie), festgelegt am 5. Oktober 2026. Startmeldung `event,startup,61,eu,5.1.1`. Das ioBroker-Skript im Repository (`ioBroker/NsPanelTs.ts`) zielt auf dieselbe Version und gehört zum Berry-Treiber 10.
 - **Entwicklung in Claude Code (Cloud), Betrieb über einen separaten Chat.** Siehe Abschnitt 6.
 - **Änderungen am Upstream-Code klein halten.** Je weniger Dateien des Originals der Fork anfasst, desto leichter lassen sich Korrekturen von joBr99 übernehmen.
+- **Maßstab für die Bedienung ist die ioBroker-Variante** (Dirk, 5. Oktober 2026). Wo sich das Original-Backend am Panel anders verhält als das ioBroker-Skript `ioBroker/NsPanelTs.ts`, gilt das ioBroker-Verhalten.
 
 Noch offen:
 
@@ -82,7 +83,9 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 
 - Das Panel läuft mit Firmware 61 (5.1.1), Berry-Treiber 9 von joBr99 und diesem Fork über HACS.
 - Am Panel bestätigt: Startmeldung `event,startup,61,eu,5.1.1`, Versions-Check ohne Update-Dialog, Bildschirmschoner, `cardEntities`, Zeilenschalter, `popupLight` mit Schalter und Helligkeitsregler, Rückkehr in den Bildschirmschoner.
-- Noch nicht am Panel geprüft: Farbtemperatur-Regler, Farbrad, `popupLight2`, alle übrigen Karten.
+- `popupLight2` am Panel bestätigt: Der große Regler erscheint und reagiert. Seine Ecken sind eckig, weil Firmware 61 die Zeilen zum Zeichnen der runden Ecken auskommentiert hat (`fork/n2t-out-61/popupLight2.txt`, „paint corners"). Das Backend kann das nicht ändern.
+- Das Licht-Popup bietet Farbtemperatur, Farbe und Effekte auch bei ausgeschalteter Lampe an, wie das ioBroker-Skript (Rolle `hue`). Das Original zeigt sie nur bei eingeschalteter Lampe. Home Assistant meldet bei ausgeschalteter Lampe keine Farbtemperatur, das Backend zeigt dann die zuletzt gesehene Reglerstellung oder die Mitte.
+- Noch nicht am Panel geprüft: Farbtemperatur-Regler, Farbrad, alle übrigen Karten.
 - `cardEntities` sendet in 61 bei jedem Seitenaufbau `event,buttonPress2,,button`. Das Backend ignoriert es, im Log steht dann ein Tastendruck mit leerer Entität.
 
 ### Helligkeitsregler im Licht-Popup fehlte unter Firmware 53 (erledigt durch 61)
