@@ -296,6 +296,10 @@ class LuiPagesGen(object):
             value = f"{icon_up}|{icon_stop}|{icon_down}|{icon_up_status}|{icon_stop_status}|{icon_down_status}"
         elif entityType in "light":
             entityTypePanel = "light"
+            # firmware 61 dropped the featNewSliders flag of dimmode; the new
+            # light popup (popupLight2) is opened by the item type instead
+            if self._config.get("featureExperimentalSliders"):
+                entityTypePanel = "light2"
             value = 1 if entity.state == "on" else 0
         elif entityType in ["switch", "input_boolean", "automation"]:
             entityTypePanel = "switch"

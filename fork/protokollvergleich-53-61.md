@@ -56,7 +56,7 @@ Diese Befehle versteht jede Seite. Neue globale Befehle gibt es nicht.
 | `date~D` | gleich | `luibackend/pages.py:123-134` | **unverändert** |
 | `timeout~N` | gleich | `luibackend/pages.py` (render_card) | **unverändert** |
 | `pageType~Ziel~a2~a3~a4` | gleich, mehr Ziele | `luibackend/pages.py:136-139` | **unverändert** |
-| `dimmode~sleep~normal~bco~font~feat` | Feld 5 entfällt | `luibackend/controller.py:89-93` | **unverändert**, `featureExperimentalSliders` wirkt nicht mehr |
+| `dimmode~sleep~normal~bco~font~feat` | Feld 5 entfällt | `luibackend/controller.py:89-93` | **unverändert**, das Feld wirkt nicht mehr. Der Fork nutzt `featureExperimentalSliders` stattdessen für `light2`, siehe Abschnitt popupLight2 |
 
 Neue `pageType`-Ziele in 61: `pageSplash`, `screensaver3`, `cardSchedule`, `cardGrid3`, `cardThermo2`, `cardLChart2`, `popupInSel`, `popupFan`, `popupShutter2`, `popupLight2`, `popupTimer`, `popupSlider`, `popupColor`. Entfallen ist `popupLightNew`. Alle Ziele, die das Backend heute sendet, gibt es weiterhin.
 
@@ -68,7 +68,7 @@ Neue `pageType`-Ziele in 61: `pageSplash`, `screensaver3`, `cardSchedule`, `card
 
 - Bei allen gleich: Abfrage per `GetDriverVersion`, Antwort `{"nlui_driver_version":"N"}`, Befehle `CustomSend`, `FlashNextion`, `FlashNextionAdv0-6`, `UpdateDriverVersion`, gleiches Framing, 115200 Baud.
 - Treiber 10 meldet den Flash-Fortschritt als Text mit `"done"` am Ende und schaltet beim Flashen `Rule3` ab und danach wieder ein. Treiber 11 flasht robuster.
-- Folgerung: Für das Protokoll mit 61 ist kein Treiberwechsel nötig. Das ist abgeleitet, nicht getestet. Die ioBroker-Linie liefert 61 zusammen mit Treiber 10 aus.
+- Folgerung: Für das Protokoll mit 61 ist kein Treiberwechsel nötig. Am 5. Oktober 2026 am Panel bestätigt, Umfang siehe Abschnitt 9. Die ioBroker-Linie liefert 61 zusammen mit Treiber 10 aus.
 
 ### Updater
 
@@ -196,7 +196,9 @@ In 53 war das Lesen von Feld 2 auskommentiert, in 61 ist es aktiv (`61:popupFan:
 - Großer senkrechter Helligkeitsregler, öffnet sich über den Eintragstyp `light2`.
 - Meldet sich als `pageOpenDetail,popupLight,<id>` (`61:popupLight2:28`), das Backend antwortet also ohne Änderung.
 - Abweichungen zu `popupLight`: Feld 2 und 8–10 werden ignoriert, Feld 3 ist die Füllfarbe des Reglers.
-- **neu**: Das Backend müsste nur `light2` statt `light` als Typ senden (`luibackend/pages.py:298-299`), z. B. per Option.
+- **umgesetzt**: Mit `featureExperimentalSliders: true` sendet das Backend für Lampen den Typ `light2` statt `light` (`luibackend/pages.py`, `generate_entities_item`). Ohne die Option bleibt es bei `popupLight`.
+- Farbrad, Farbtemperatur-Regler und Effekt-Knopf wertet `popupLight2` aus denselben Feldern 6, 7 und 11 aus wie `popupLight` (`61:popupLight2:395-510`). Die Events (`OnOff`, `brightnessSlider`, `colorTempSlider`, `colorWheel`, `popupLight,bExit`) sind gleich.
+- `cardEntities` zeigt für `light2` denselben Zeilenschalter wie für `light` (`61:cardEntities:1510`). Die Grid-Karten öffnen das Popup bei langem Druck.
 
 ### popupShutter2
 
@@ -264,7 +266,7 @@ Antwort: `buttonPress2,<id>,tempUpd,<soll×10>`, 800 ms nach dem Loslassen. Kein
 - `screensaver2`: Ob ein Tipp auf einen Slot neben dem neuen `buttonPress2,,button` noch `bExit` auslöst, hängt von der Reihenfolge der Touch-Events ab.
 - Die Wisch-Hotspots der Karten klicken die Pfeile nur „gedrückt" an. Da die Pfeile in 61 erst beim Loslassen senden, könnte Wischen zum Blättern wirkungslos sein. Ob die Hotspots erreichbar sind, lässt sich aus den Textauszügen nicht ablesen.
 - Die US-Varianten (us-l, us-p) sind nicht geprüft.
-- Dass Treiber 9 mit 61 voll funktioniert, ist abgeleitet, nicht getestet.
+- Treiber 9 mit 61 ist am 5. Oktober 2026 am Panel getestet für: Startmeldung, Versions-Check, Bildschirmschoner, `cardEntities`, Zeilenschalter, `popupLight` mit Schalter und Helligkeitsregler, Rückkehr in den Bildschirmschoner. Alle übrigen Karten und Popups sind mit Treiber 9 ungetestet.
 - Das Add-on unter `nspanel-lovelace-ui/` nutzt dieselben Formate und bräuchte dieselben Anpassungen. Es ist hier nicht weiter betrachtet.
 
 ## 10. Nebenbefund: fehlender Helligkeitsregler bei Firmware 53
