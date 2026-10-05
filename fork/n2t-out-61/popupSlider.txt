@@ -1,0 +1,1130 @@
+Page popupSlider
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Locked             : no
+        Swide up page ID   : disabled
+        Swide down page ID : disabled
+        Swide left page ID : disabled
+        Swide right page ID: disabled
+    
+    Events
+        Preinitialize Event
+            dim=dimValueNormal
+            //get entitiy name
+            tEntity1.txt=pageIcons.tTmp1.txt
+            //get entity id
+            entn.txt=pageIcons.tTmp2.txt
+            tIcon1.txt=pageIcons.tTmp3.txt
+            vis p0,0
+            vis tSend,0
+            vis tIcon1,1
+            vis tEntity1,1
+            vis tSlider1,0
+            vis hSlider1,0
+            vis tIconS1M,0
+            vis tIconS1P,0
+            vis tSlider1Val,0
+            vis tSlider2,0
+            vis hSlider2,0
+            vis tIconS2M,0
+            vis tIconS2P,0
+            vis tSlider2Val,0
+            vis tSlider3,0
+            vis hSlider3,0
+            vis tIconS3M,0
+            vis tIconS3P,0
+            vis tSlider3Val,0
+            //page open event
+            // event,pageOpenDetail,typeOfPage,tEntityName
+            // craft command
+            tSend.txt="event,pageOpenDetail,popupSlider,"+entn.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+            popupSlider.bco=defaultBcoColor
+            b0.bco=defaultBcoColor
+            tIcon1.bco=defaultBcoColor
+            tIconS1P.bco=defaultBcoColor
+            tIconS2P.bco=defaultBcoColor
+            tIconS3P.bco=defaultBcoColor
+            tIconS1M.bco=defaultBcoColor
+            tIconS2M.bco=defaultBcoColor
+            tIconS3M.bco=defaultBcoColor
+            tEntity1.bco=defaultBcoColor
+            tSlider1.bco=defaultBcoColor
+            tSlider2.bco=defaultBcoColor
+            tSlider3.bco=defaultBcoColor
+            tSlider1Val.bco=defaultBcoColor
+            tSlider2Val.bco=defaultBcoColor
+            tSlider3Val.bco=defaultBcoColor
+            b0.pco=defaultFontColor
+            tIcon1.pco=tempIconColor
+            tIconS1P.pco=defaultFontColor
+            tIconS2P.pco=defaultFontColor
+            tIconS3P.pco=defaultFontColor
+            tIconS1M.pco=defaultFontColor
+            tIconS2M.pco=defaultFontColor
+            tIconS3M.pco=defaultFontColor
+            tEntity1.pco=defaultFontColor
+            tSlider1.pco=defaultFontColor
+            tSlider2.pco=defaultFontColor
+            tSlider3.pco=defaultFontColor
+            if(defaultBcoColor==0)
+            {
+                hSlider1.pic=14
+                hSlider1.pic1=13
+                hSlider1.pic2=15
+                hSlider2.pic=14
+                hSlider2.pic1=13
+                hSlider2.pic2=15
+                hSlider3.pic=14
+                hSlider3.pic1=13
+                hSlider3.pic2=15
+            }
+        
+Variable (string) entn
+    Attributes
+        Scope         : local
+        Text          : 
+        Max. Text Size: 80
+    
+Variable (string) strCommand
+    Attributes
+        Scope         : local
+        Text          : 
+        Max. Text Size: 500
+    
+Variable (string) tId
+    Attributes
+        Scope         : local
+        Text          : 
+        Max. Text Size: 20
+    
+Variable (string) tInstruction
+    Attributes
+        Scope         : local
+        Text          : 
+        Max. Text Size: 20
+    
+Variable (string) tSend
+    Attributes
+        Scope         : local
+        Text          : 
+        Max. Text Size: 200
+    
+Variable (string) tTmp
+    Attributes
+        Scope         : local
+        Text          : 
+        Max. Text Size: 80
+    
+Variable (string) va0
+    Attributes
+        Scope         : local
+        Text          : 0
+        Max. Text Size: 10
+    
+Variable (int32) vaS1Disable
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS1StepVal
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS1ZeroVal
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS2Disable
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS2StepVal
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS2ZeroVal
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS3Disable
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS3StepVal
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaS3ZeroVal
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaSlider1
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaSlider2
+    Attributes
+        Scope: local
+        Value: 0
+    
+Variable (int32) vaSlider3
+    Attributes
+        Scope: local
+        Value: 0
+    
+Text tEntity1
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : tEntity1
+        Max. Text Size     : 30
+    
+Text tIcon1
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : î´
+        Max. Text Size     : 10
+    
+Text tIconS1M
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : î´
+        Max. Text Size     : 10
+    
+    Events
+        Touch Press Event
+            if(hSlider1.val>hSlider1.minval)
+            {
+                hSlider1.val=hSlider1.val-vaS1StepVal.val
+            }
+            // event,buttonPress2,internalNameEntity,volumeSlider,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider1,"
+            covx hSlider1.val,tTmp.txt,0,0
+            if(hSlider1.val==vaS1ZeroVal.val)
+            {
+                tSlider1Val.txt="0"
+            }
+            if(hSlider1.val>vaS1ZeroVal.val&&hSlider1.val<=hSlider1.maxval)
+            {
+                vaSlider1.val=hSlider1.val-vaS1ZeroVal.val
+                covx vaSlider1.val,tSlider1Val.txt,0,0
+            }
+            if(hSlider1.val<vaS1ZeroVal.val&&hSlider1.val>=hSlider1.minval)
+            {
+                vaSlider1.val=vaS1ZeroVal.val-hSlider1.val
+                covx vaSlider1.val,tSlider1Val.txt,0,0
+                va0.txt=tSlider1Val.txt
+                tSlider1Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Text tIconS1P
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : î
+        Max. Text Size     : 10
+    
+    Events
+        Touch Press Event
+            if(hSlider1.val<hSlider1.maxval)
+            {
+                hSlider1.val=hSlider1.val+vaS1StepVal.val
+            }
+            // event,buttonPress2,internalNameEntity,volumeSlider,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider1,"
+            covx hSlider1.val,tTmp.txt,0,0
+            if(hSlider1.val==vaS1ZeroVal.val)
+            {
+                tSlider1Val.txt="0"
+            }
+            if(hSlider1.val>vaS1ZeroVal.val)
+            {
+                vaSlider1.val=hSlider1.val-vaS1ZeroVal.val
+                covx vaSlider1.val,tSlider1Val.txt,0,0
+            }
+            if(hSlider1.val<vaS1ZeroVal.val)
+            {
+                vaSlider1.val=vaS1ZeroVal.val-hSlider1.val
+                covx vaSlider1.val,tSlider1Val.txt,0,0
+                va0.txt=tSlider1Val.txt
+                tSlider1Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Text tIconS2M
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : î´
+        Max. Text Size     : 10
+    
+    Events
+        Touch Press Event
+            if(hSlider2.val>hSlider2.minval)
+            {
+                hSlider2.val=hSlider2.val-vaS2StepVal.val
+            }
+            // event,buttonPress2,internalNameEntity,positionSlider2,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider2,"
+            covx hSlider2.val,tTmp.txt,0,0
+            if(hSlider2.val==vaS2ZeroVal.val)
+            {
+                tSlider2Val.txt="0"
+            }
+            if(hSlider2.val>vaS2ZeroVal.val&&hSlider2.val<=hSlider2.maxval)
+            {
+                vaSlider2.val=hSlider2.val-vaS2ZeroVal.val
+                covx vaSlider2.val,tSlider2Val.txt,0,0
+            }
+            if(hSlider2.val<vaS2ZeroVal.val&&hSlider2.val>=hSlider2.minval)
+            {
+                vaSlider2.val=vaS2ZeroVal.val-hSlider2.val
+                covx vaSlider2.val,tSlider2Val.txt,0,0
+                va0.txt=tSlider2Val.txt
+                tSlider2Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Text tIconS2P
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : î
+        Max. Text Size     : 10
+    
+    Events
+        Touch Press Event
+            if(hSlider2.val<hSlider2.maxval)
+            {
+                hSlider2.val=hSlider2.val+vaS2StepVal.val
+            }
+            // event,buttonPress2,internalNameEntity,positionSlider2,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider2,"
+            covx hSlider2.val,tTmp.txt,0,0
+            if(hSlider2.val==vaS2ZeroVal.val)
+            {
+                tSlider2Val.txt="0"
+            }
+            if(hSlider2.val>vaS2ZeroVal.val&&hSlider2.val<=hSlider2.maxval)
+            {
+                vaSlider2.val=hSlider2.val-vaS2ZeroVal.val
+                covx vaSlider2.val,tSlider2Val.txt,0,0
+            }
+            if(hSlider2.val<vaS2ZeroVal.val&&hSlider2.val>=hSlider2.minval)
+            {
+                vaSlider2.val=vaS2ZeroVal.val-hSlider2.val
+                covx vaSlider2.val,tSlider2Val.txt,0,0
+                va0.txt=tSlider2Val.txt
+                tSlider2Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Text tIconS3M
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : î´
+        Max. Text Size     : 10
+    
+    Events
+        Touch Press Event
+            if(hSlider3.val>hSlider3.minval)
+            {
+                hSlider3.val=hSlider3.val-vaS3StepVal.val
+            }
+            // event,buttonPress2,internalNameEntity,positionSlider3,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider3,"
+            covx hSlider3.val,tTmp.txt,0,0
+            if(hSlider3.val==vaS3ZeroVal.val)
+            {
+                tSlider3Val.txt="0"
+            }
+            if(hSlider3.val>vaS3ZeroVal.val&&hSlider3.val<=hSlider3.maxval)
+            {
+                vaSlider3.val=hSlider3.val-vaS3ZeroVal.val
+                covx vaSlider3.val,tSlider3Val.txt,0,0
+            }
+            if(hSlider3.val<vaS3ZeroVal.val&&hSlider3.val>=hSlider3.minval)
+            {
+                vaSlider3.val=vaS3ZeroVal.val-hSlider3.val
+                covx vaSlider3.val,tSlider3Val.txt,0,0
+                va0.txt=tSlider3Val.txt
+                tSlider3Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Text tIconS3P
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : î
+        Max. Text Size     : 10
+    
+    Events
+        Touch Press Event
+            if(hSlider3.val<hSlider3.maxval)
+            {
+                hSlider3.val=hSlider3.val+vaS3StepVal.val
+            }
+            // event,buttonPress2,internalNameEntity,positionSlider3,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider3,"
+            covx hSlider3.val,tTmp.txt,0,0
+            if(hSlider3.val==vaS3ZeroVal.val)
+            {
+                tSlider3Val.txt="0"
+            }
+            if(hSlider3.val>vaS3ZeroVal.val&&hSlider3.val<=hSlider3.maxval)
+            {
+                vaSlider3.val=hSlider3.val-vaS3ZeroVal.val
+                covx vaSlider3.val,tSlider3Val.txt,0,0
+            }
+            if(hSlider3.val<vaS3ZeroVal.val&&hSlider3.val>=hSlider3.minval)
+            {
+                vaSlider3.val=vaS3ZeroVal.val-hSlider3.val
+                covx vaSlider3.val,tSlider3Val.txt,0,0
+                va0.txt=tSlider3Val.txt
+                tSlider3Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Text tSlider1
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : 
+        Max. Text Size     : 30
+    
+Text tSlider1Val
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : 0
+        Max. Text Size     : 30
+    
+Text tSlider2
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : 
+        Max. Text Size     : 30
+    
+Text tSlider2Val
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : 0
+        Max. Text Size     : 30
+    
+Text tSlider3
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : 
+        Max. Text Size     : 30
+    
+Text tSlider3Val
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Text               : 0
+        Max. Text Size     : 30
+    
+Picture p0
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+    
+Slider hSlider1
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+        Position         : 6
+        Upper range limit: 12
+        Lower range limit: 0
+    
+    Events
+        Touch Release Event
+            // event,buttonPress2,internalNameEntity,positionSlider1,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider1,"
+            covx hSlider1.val,tTmp.txt,0,0
+            hSlider1.val=hSlider1.val
+            if(hSlider1.val==vaS1ZeroVal.val)
+            {
+                tSlider1Val.txt="0"
+            }
+            if(hSlider1.val>vaS1ZeroVal.val)
+            {
+                vaSlider1.val=hSlider1.val-vaS1ZeroVal.val
+                covx vaSlider1.val,tSlider1Val.txt,0,0
+            }
+            if(hSlider1.val<vaS1ZeroVal.val)
+            {
+                vaSlider1.val=vaS1ZeroVal.val-hSlider1.val
+                covx vaSlider1.val,tSlider1Val.txt,0,0
+                va0.txt=tSlider1Val.txt
+                tSlider1Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Slider hSlider2
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+        Position         : 6
+        Upper range limit: 12
+        Lower range limit: 0
+    
+    Events
+        Touch Release Event
+            // event,buttonPress2,internalNameEntity,positionSlider,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider2,"
+            covx hSlider2.val,tTmp.txt,0,0
+            hSlider2.val=hSlider2.val
+            if(hSlider2.val==vaS2ZeroVal.val)
+            {
+                tSlider2Val.txt="0"
+            }
+            if(hSlider2.val>vaS2ZeroVal.val)
+            {
+                vaSlider2.val=hSlider2.val-vaS2ZeroVal.val
+                covx vaSlider2.val,tSlider2Val.txt,0,0
+            }
+            if(hSlider2.val<vaS2ZeroVal.val)
+            {
+                vaSlider2.val=vaS2ZeroVal.val-hSlider2.val
+                covx vaSlider2.val,tSlider2Val.txt,0,0
+                va0.txt=tSlider2Val.txt
+                tSlider2Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Slider hSlider3
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+        Position         : 6
+        Upper range limit: 12
+        Lower range limit: 0
+    
+    Events
+        Touch Release Event
+            // event,buttonPress2,internalNameEntity,positionSlider,50
+            //craft command
+            tSend.txt="event,buttonPress2,"+entn.txt+",positionSlider3,"
+            covx hSlider3.val,tTmp.txt,0,0
+            hSlider3.val=hSlider3.val
+            if(hSlider3.val==vaS3ZeroVal.val)
+            {
+                tSlider3Val.txt="0"
+            }
+            if(hSlider3.val>vaS3ZeroVal.val)
+            {
+                vaSlider3.val=hSlider3.val-vaS3ZeroVal.val
+                covx vaSlider3.val,tSlider3Val.txt,0,0
+            }
+            if(hSlider3.val<vaS3ZeroVal.val)
+            {
+                vaSlider3.val=vaS3ZeroVal.val-hSlider3.val
+                covx vaSlider3.val,tSlider3Val.txt,0,0
+                va0.txt=tSlider3Val.txt
+                tSlider3Val.txt="-"+va0.txt
+            }
+            tSend.txt+=tTmp.txt
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Button b0
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+        State            : unpressed
+        Text             : î
+        Max. Text Size   : 10
+    
+    Events
+        Touch Press Event
+            tSend.txt="event,buttonPress2,popupSlider,bExit"
+            //send calc crc
+            btlen tSend.txt,sys0
+            crcrest 1,0xffff // reset CRC
+            crcputh 55 bb
+            crcputs sys0,2
+            crcputs tSend.txt,0
+            //send cmd
+            printh 55 bb
+            prints sys0,2
+            prints tSend.txt,0
+            prints crcval,2
+        
+Timer tmSerial
+    Attributes
+        Scope      : local
+        Period (ms): 50
+        Enabled    : yes
+    
+    Events
+        Timer Event
+            // data available
+            if(usize>1)
+            {
+                bufferPos=0
+                while(bufferPos<usize)
+                {
+                    // check for 0x55 0xBB - Command Init Secuence
+                    if(u[bufferPos]==187&&u[bufferPos-1]==85)
+                    {
+                        //remove garbage at the start of the buffer if there's any to free buffer for command
+                        if(u[bufferPos]!=1)
+                        {
+                            udelete bufferPos-1
+                        }
+                        //instruction is now aligned with buffer, because we deleted garbage before instrcution
+                        //get length after init sequence (check if there are more than to bytes in buffer)
+                        if(3<usize)
+                        {
+                            // check if serial buffer has reached the announced length
+                            ucopy payloadLength,2,2,0
+                            // we are only checking payload length so we have to skip first 3 bytes (init+payload length) (-1 because of < instead of <=)
+                            payloadLength+=3
+                            // payload length does also not contain crc, so we are adding another 2 bytes for crc
+                            payloadLength+=2
+                            if(payloadLength<usize)
+                            {
+                                // calculate crc
+                                crcrest 1,0xFFFF
+                                // u[2] contains payload legth at 3rd pos in buffer, we are calculating crc from 3rd pos with number of bytes from payload length
+                                //crcputu 3,u[2]
+                                // u[2] cotnains payload length, we are calculating a crc over the whole message, so we have to add 3 to the length from u[2]
+                                crcputu 0,payloadLength-1
+                                // get recived crc to be able to compare it
+                                ucopy recvCrc,payloadLength-1,2,0
+                                // compare crc with recived value
+                                if(crcval==recvCrc)
+                                {
+                                    // crc is okay
+                                    // here is the location where acual code should be
+                                    // write command to variable strCommand
+                                    ucopy strCommand.txt,4,payloadLength-5,0
+                                    // write instruction to tInstuction (debug output, but used as variable here, ui elements will be disabled by default)
+                                    spstr strCommand.txt,tInstruction.txt,"~",0
+                                    spstr strCommand.txt,tTmp.txt,"~",1
+                                    if(tInstruction.txt=="entityUpdateDetail"&&tTmp.txt==entn.txt)
+                                    {
+                                        // get Slider1 Headline
+                                        spstr strCommand.txt,tSlider1.txt,"~",2
+                                        //get Slider1 Minus Icon
+                                        spstr strCommand.txt,tIconS1M.txt,"~",3
+                                        //get Slider1 Plus Icon
+                                        spstr strCommand.txt,tIconS1P.txt,"~",4
+                                        //get Slider1 Min Value
+                                        spstr strCommand.txt,tTmp.txt,"~",6
+                                        covx tTmp.txt,hSlider1.minval,0,0
+                                        //get Slider1 Max Value
+                                        spstr strCommand.txt,tTmp.txt,"~",7
+                                        covx tTmp.txt,hSlider1.maxval,0,0
+                                        //get Slider1 Current Value
+                                        spstr strCommand.txt,tTmp.txt,"~",5
+                                        covx tTmp.txt,hSlider1.val,0,0
+                                        //get Slider1 Zero Value
+                                        spstr strCommand.txt,tTmp.txt,"~",8
+                                        covx tTmp.txt,vaS1ZeroVal.val,0,0
+                                        //get Slider1 Step Value
+                                        spstr strCommand.txt,tTmp.txt,"~",9
+                                        covx tTmp.txt,vaS1StepVal.val,0,0
+                                        if(hSlider1.val==vaS1ZeroVal.val)
+                                        {
+                                            tSlider1Val.txt="0"
+                                        }
+                                        if(hSlider1.val>vaS1ZeroVal.val)
+                                        {
+                                            vaSlider1.val=hSlider1.val-vaS1ZeroVal.val
+                                            covx vaSlider1.val,tSlider1Val.txt,0,0
+                                        }
+                                        if(hSlider1.val<vaS1ZeroVal.val)
+                                        {
+                                            vaSlider1.val=vaS1ZeroVal.val-hSlider1.val
+                                            covx vaSlider1.val,tSlider1Val.txt,0,0
+                                            va0.txt=tSlider1Val.txt
+                                            tSlider1Val.txt="-"+va0.txt
+                                        }
+                                        // get Slider2 Headline
+                                        spstr strCommand.txt,tSlider2.txt,"~",11
+                                        //get Slider2 Minus Icon
+                                        spstr strCommand.txt,tIconS2M.txt,"~",12
+                                        //get Slider2 Plus Icon
+                                        spstr strCommand.txt,tIconS2P.txt,"~",13
+                                        //get Slider2 Min Value
+                                        spstr strCommand.txt,tTmp.txt,"~",15
+                                        covx tTmp.txt,hSlider2.minval,0,0
+                                        //get Slider2 Max Value
+                                        spstr strCommand.txt,tTmp.txt,"~",16
+                                        covx tTmp.txt,hSlider2.maxval,0,0
+                                        //get Slider2 Current Value
+                                        spstr strCommand.txt,tTmp.txt,"~",14
+                                        covx tTmp.txt,hSlider2.val,0,0
+                                        //get Slider2 Zero Value
+                                        spstr strCommand.txt,tTmp.txt,"~",17
+                                        covx tTmp.txt,vaS2ZeroVal.val,0,0
+                                        //get Slider2 Step Value
+                                        spstr strCommand.txt,tTmp.txt,"~",18
+                                        covx tTmp.txt,vaS2StepVal.val,0,0
+                                        if(hSlider2.val==vaS2ZeroVal.val)
+                                        {
+                                            tSlider2Val.txt="0"
+                                        }
+                                        if(hSlider2.val>vaS2ZeroVal.val)
+                                        {
+                                            vaSlider2.val=hSlider2.val-vaS2ZeroVal.val
+                                            covx vaSlider2.val,tSlider2Val.txt,0,0
+                                        }
+                                        if(hSlider2.val<vaS2ZeroVal.val)
+                                        {
+                                            vaSlider2.val=vaS2ZeroVal.val-hSlider2.val
+                                            covx vaSlider2.val,tSlider2Val.txt,0,0
+                                            va0.txt=tSlider2Val.txt
+                                            tSlider2Val.txt="-"+va0.txt
+                                        }
+                                        // get Slider3 Headline
+                                        spstr strCommand.txt,tSlider3.txt,"~",20
+                                        //get Slider3 Minus Icon
+                                        spstr strCommand.txt,tIconS3M.txt,"~",21
+                                        //get Slider3 Plus Icon
+                                        spstr strCommand.txt,tIconS3P.txt,"~",22
+                                        //get Slider3 Min Value
+                                        spstr strCommand.txt,tTmp.txt,"~",24
+                                        covx tTmp.txt,hSlider3.minval,0,0
+                                        //get Slider3 Max Value
+                                        spstr strCommand.txt,tTmp.txt,"~",25
+                                        covx tTmp.txt,hSlider3.maxval,0,0
+                                        //get Slider3 Current Value
+                                        spstr strCommand.txt,tTmp.txt,"~",23
+                                        covx tTmp.txt,hSlider3.val,0,0
+                                        //get Slider3 Zero Value
+                                        spstr strCommand.txt,tTmp.txt,"~",26
+                                        covx tTmp.txt,vaS3ZeroVal.val,0,0
+                                        //get Slider3 Step Value
+                                        spstr strCommand.txt,tTmp.txt,"~",27
+                                        covx tTmp.txt,vaS3StepVal.val,0,0
+                                        if(hSlider3.val==vaS3ZeroVal.val)
+                                        {
+                                            tSlider3Val.txt="0"
+                                        }
+                                        if(hSlider3.val>vaS3ZeroVal.val)
+                                        {
+                                            vaSlider3.val=hSlider3.val-vaS3ZeroVal.val
+                                            covx vaSlider3.val,tSlider3Val.txt,0,0
+                                        }
+                                        if(hSlider3.val<vaS3ZeroVal.val)
+                                        {
+                                            vaSlider3.val=vaS3ZeroVal.val-hSlider3.val
+                                            covx vaSlider3.val,tSlider3Val.txt,0,0
+                                            va0.txt=tSlider3Val.txt
+                                            tSlider3Val.txt="-"+va0.txt
+                                        }
+                                    }
+                                    spstr strCommand.txt,tTmp.txt,"~",10
+                                    if(tTmp.txt=="enable")
+                                    {
+                                        vis tSlider1,1
+                                        vis hSlider1,1
+                                        vis tIconS1M,1
+                                        vis tIconS1P,1
+                                        vis tSlider1Val,1
+                                    }
+                                    spstr strCommand.txt,tTmp.txt,"~",19
+                                    if(tTmp.txt=="enable")
+                                    {
+                                        vis tSlider2,1
+                                        vis hSlider2,1
+                                        vis tIconS2M,1
+                                        vis tIconS2P,1
+                                        vis tSlider2Val,1
+                                    }
+                                    spstr strCommand.txt,tTmp.txt,"~",28
+                                    if(tTmp.txt=="enable")
+                                    {
+                                        vis tSlider3,1
+                                        vis hSlider3,1
+                                        vis tIconS3M,1
+                                        vis tIconS3P,1
+                                        vis tSlider3Val,1
+                                    }
+                                    if(tInstruction.txt=="dimmode")
+                                    {
+                                        // get value
+                                        spstr strCommand.txt,tTmp.txt,"~",1
+                                        covx tTmp.txt,dimValue,0,0
+                                        // get value normal
+                                        spstr strCommand.txt,tTmp.txt,"~",2
+                                        covx tTmp.txt,dimValueNormal,0,0
+                                        dim=dimValueNormal
+                                        // get background color
+                                        spstr strCommand.txt,tTmp.txt,"~",3
+                                        if(tTmp.txt!="")
+                                        {
+                                            covx tTmp.txt,defaultBcoColor,0,0
+                                        }
+                                        // get font color
+                                        spstr strCommand.txt,tTmp.txt,"~",4
+                                        if(tTmp.txt!="")
+                                        {
+                                            covx tTmp.txt,defaultFontColor,0,0
+                                        }
+                                    }
+                                    if(tInstruction.txt=="time")
+                                    {
+                                        // get set time to global variable
+                                        spstr strCommand.txt,pageIcons.vaTime.txt,"~",1
+                                    }
+                                    if(tInstruction.txt=="date")
+                                    {
+                                        // get set date to global variable
+                                        spstr strCommand.txt,pageIcons.vaDate.txt,"~",1
+                                    }
+                                    if(tInstruction.txt=="timeout")
+                                    {
+                                        //set timeout to global var
+                                        spstr strCommand.txt,tTmp.txt,"~",1
+                                        covx tTmp.txt,sleepTimeout,0,0
+                                    }
+                                    if(tInstruction.txt=="pageType")
+                                    {
+                                        //command format pageType,specialPageName
+                                        //write name of speical page to tId
+                                        spstr strCommand.txt,tId.txt,"~",1
+                                        //save second arg if there's one
+                                        spstr strCommand.txt,tTmp.txt,"~",2
+                                        //save third arg if there's one
+                                        spstr strCommand.txt,pageIcons.tTmp2.txt,"~",3
+                                        spstr strCommand.txt,pageIcons.tTmp3.txt,"~",4
+                                        //we are going to exit this page with this command, so we have to clear the buffer, so we are not getting into a stupid loop ...
+                                        udelete payloadLength-1
+                                        bufferPos=0
+                                        if(tId.txt=="pageSplash")
+                                        {
+                                            page pageSplash
+                                        }
+                                        if(tId.txt=="pageStartup")
+                                        {
+                                            page pageStartup
+                                        }
+                                        if(tId.txt=="screensaver")
+                                        {
+                                            page screensaver
+                                        }
+                                        if(tId.txt=="screensaver2")
+                                        {
+                                            page screensaver2
+                                        }
+                                        if(tId.txt=="screensaver3")
+                                        {
+                                            page screensaver3
+                                        }
+                                        if(tId.txt=="cardEntities")
+                                        {
+                                            page cardEntities
+                                        }
+                                        if(tId.txt=="cardSchedule")
+                                        {
+                                            page cardSchedule
+                                        }
+                                        if(tId.txt=="cardGrid")
+                                        {
+                                            page cardGrid
+                                        }
+                                        if(tId.txt=="cardGrid2")
+                                        {
+                                            page cardGrid2
+                                        }
+                                        if(tId.txt=="cardGrid3")
+                                        {
+                                            page cardGrid3
+                                        }
+                                        if(tId.txt=="cardMedia")
+                                        {
+                                            page cardMedia
+                                        }
+                                        if(tId.txt=="cardThermo")
+                                        {
+                                            page cardThermo
+                                        }
+                                        if(tId.txt=="cardThermo2")
+                                        {
+                                            page cardThermo2
+                                        }
+                                        if(tId.txt=="cardAlarm")
+                                        {
+                                            page cardAlarm
+                                        }
+                                        if(tId.txt=="cardQR")
+                                        {
+                                            page cardQR
+                                        }
+                                        if(tId.txt=="cardPower")
+                                        {
+                                            page cardPower
+                                        }
+                                        if(tId.txt=="cardChart")
+                                        {
+                                            page cardChart
+                                        }
+                                        if(tId.txt=="cardLChart")
+                                        {
+                                            page cardLChart
+                                        }
+                                        if(tId.txt=="cardLChart2")
+                                        {
+                                            page cardLChart2
+                                        }
+                                        if(tId.txt=="popupInSel")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupInSel
+                                        }
+                                        if(tId.txt=="popupFan")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupFan
+                                        }
+                                        if(tId.txt=="popupNotify")
+                                        {
+                                            page popupNotify
+                                        }
+                                        if(tId.txt=="popupShutter")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupShutter
+                                        }
+                                        if(tId.txt=="popupShutter2")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupShutter2
+                                        }
+                                        if(tId.txt=="popupLight")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupLight
+                                        }
+                                        if(tId.txt=="popupLight2")
+                                        {
+                                            page popupLight2
+                                        }
+                                        if(tId.txt=="popupTimer")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupTimer
+                                        }
+                                        if(tId.txt=="popupSlider")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupSlider
+                                        }
+                                        if(tId.txt=="popupColor")
+                                        {
+                                            pageIcons.tTmp1.txt=tTmp.txt
+                                            page popupColor
+                                        }
+                                    }
+                                    // end of user code
+                                    udelete payloadLength-1
+                                    bufferPos=0
+                                }
+                            }
+                        }
+                    }
+                    // next character
+                    bufferPos++
+                }
+            }
+        
+Timer tmSleep
+    Attributes
+        Scope      : local
+        Period (ms): 1000
+        Enabled    : yes
+    
+    Events
+        Timer Event
+            if(sleepTimeout!=0)
+            {
+                sleepValue+=1
+                if(sleepTimeout<=sleepValue)
+                {
+                    sleepValue=0
+                    click b0,1
+                    click b0,0
+                }
+            }
+        
+TouchCap tc0
+    Attributes
+        Scope: local
+        Value: 0
+    
+    Events
+        Touch Press Event
+            sleepValue=0
+        

@@ -20,13 +20,13 @@ Dirk betreibt ein Sonoff NSPanel (EU-Modell) mit Tasmota und der Oberfläche „
 - **Nur das Repository umbenennen.** Der Ordner `apps/nspanel-lovelace-ui` und die Datei `nspanel-lovelace-ui.py` behalten ihre Namen, damit Änderungen vom Original sauber übernommen werden können und Dirks `apps.yaml` gültig bleibt.
 - **`hacs.json`:** Anzeigename „NSPanel Lovelace UI Backend (Fork)", damit er sich vom Original („NSPanel Lovelace UI Backend") unterscheidet.
 - **Display-Firmware und Berry-Treiber bleiben beim ioBroker-Team.** Der Fork ändert daran nichts, sondern legt sich auf eine Version fest und hebt sie nur bewusst an.
+- **Ziel-Firmware ist 61** (Release 5.1.1 der ioBroker-Linie), festgelegt am 5. Oktober 2026. Startmeldung `event,startup,61,eu,5.1.1`. Das ioBroker-Skript im Repository (`ioBroker/NsPanelTs.ts`) zielt auf dieselbe Version und gehört zum Berry-Treiber 10.
 - **Entwicklung in Claude Code (Cloud), Betrieb über einen separaten Chat.** Siehe Abschnitt 6.
 - **Änderungen am Upstream-Code klein halten.** Je weniger Dateien des Originals der Fork anfasst, desto leichter lassen sich Korrekturen von joBr99 übernehmen.
 
 Noch offen:
 
 - Ob der Fork auf dem AppDaemon-Backend (`apps/`) aufbaut oder auf dem neuen Add-on (`nspanel-lovelace-ui/`). Bisherige Empfehlung: AppDaemon-Backend, weil es bei Dirk läuft und das Add-on laut Entwickler Alpha ist.
-- Auf welche Firmware-Version der Fork zielt. Kandidat ist 5.1.1.
 
 ## 3. Was über die Repositories bekannt ist
 
@@ -61,8 +61,8 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 - Transport ist in beiden Linien gleich: Backend sendet an `cmnd/<topic>/CustomSend`, das Display antwortet auf `tele/<topic>/RESULT` als `{"CustomRecv":"..."}`.
 - Startmeldung der HA-Firmware: `event,startup,53,eu`. Startmeldung der ioBroker-Firmware 5.0.0: `event,startup,59,eu,5.0.0`.
 - Die 5.x-Firmware kennt zusätzliche Seitentypen (`screensaver2`, `screensaver3`) und einen zusätzlichen Parameter bei `dimmode` für ein neues Licht-Popup.
-- Dirk nennt „61" als aktuelle Firmware-Nummer. Bestätigt ist nur, dass es 5.1.0 seit November 2025 gibt und Quellen für 5.1.1 vorliegen.
-- Ein systematischer Vergleich der Nachrichtenformate zwischen 53 und 5.x steht noch aus. Das ist die erste größere Aufgabe.
+- Firmware 61 ist Release 5.1.1. Belegt durch `fork/n2t-out-61/pageStartup.txt` (`tVersion` = 61, `tRelease` = 5.1.1) und `ioBroker/NsPanelTs.ts` (`desired_display_firmware_version = 61`, `tft_version = 'v5.1.1'`).
+- Textauszüge der Firmware 61 liegen unter `fork/n2t-out-61/`, Herkunft in `fork/README.md`. Der Vergleich der Nachrichtenformate 53 gegen 61 steht in `fork/protokollvergleich-53-61.md`.
 
 ### Orientierung im Code (AppDaemon-Backend)
 
@@ -72,6 +72,8 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 - `luibackend/pages.py`: baut die Nachrichten an das Display (`pageType`, `entityUpd`, `entityUpdateDetail`, ...). Hier wird die Anpassung an die 5.x-Firmware hauptsächlich stattfinden.
 - `luibackend/controller.py`: Kartenwechsel, Tastendrücke, Zustandsänderungen aus Home Assistant.
 - `HMI/n2t-out/*.txt`: Textauszüge der HA-Firmware 53, eine Datei pro Seite oder Popup. Maßgeblich dafür, wie die Firmware die Nachrichten auswertet.
+- `fork/n2t-out-61/*.txt`: dasselbe für die Ziel-Firmware 61. `diff HMI/n2t-out/X.txt fork/n2t-out-61/X.txt` zeigt, was sich an einer Seite geändert hat.
+- `ioBroker/NsPanelTs.ts` und ticakis Adapter (`src/lib/pages/`): funktionierende Backends für Firmware 61, nützlich als Vorlage für Nachrichtenformate.
 
 ## 4. Offene Fehler im aktuellen Betrieb
 
@@ -129,6 +131,6 @@ Nach jeder Änderung am Backend:
 
 1. ~~**Dirk:** Fork anlegen und umbenennen, GitHub unter claude.ai/code verbinden.~~ Erledigt.
 2. ~~**Claude Code, erste Aufgaben im Fork:** diese Datei als `CLAUDE.md` ablegen, `hacs.json` mit eigenem Anzeigenamen versehen, im README kenntlich machen, dass es ein persönlicher Fork ohne Support ist.~~ Erledigt.
-3. **Protokollvergleich:** Für jede Seite und jedes Popup die Nachrichtenformate der HA-Firmware 53 (`HMI/n2t-out/` in diesem Repository) mit der Firmware 5.1.1 (`HMI/Readme.md` bei ticaki) vergleichen. Ergebnis: eine Liste, was unverändert funktioniert, was angepasst werden muss und was neu ist.
-4. **Entscheidung** über Zielversion und Umfang auf Basis dieser Liste.
-5. **Betriebsseite (separater Chat):** HACS auf den Fork umstellen, das Regler-Problem klären, die Diagnose-Protokollierung (`quiet: false`) wieder abschalten, später die 5.1.1 zum Test flashen.
+3. ~~**Protokollvergleich** 53 gegen 61, Seite für Seite.~~ Erledigt, siehe `fork/protokollvergleich-53-61.md`.
+4. **Entscheidung** über den Umfang auf Basis dieser Liste. Die Zielversion 61 steht fest.
+5. **Betriebsseite (separater Chat):** HACS auf den Fork umstellen, das Regler-Problem klären, die Diagnose-Protokollierung (`quiet: false`) wieder abschalten, später die Firmware 61 zum Test flashen.

@@ -1,0 +1,86 @@
+Page pageSplash
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Locked             : no
+        Swide up page ID   : disabled
+        Swide down page ID : disabled
+        Swide left page ID : disabled
+        Swide right page ID: disabled
+    
+    Events
+        Preinitialize Event
+            vis n0,0
+        
+Number n0
+    Attributes
+        Scope              : local
+        Dragging           : 0
+        Send Component ID  : disabled
+        Associated Keyboard: none
+        Value              : 0
+    
+Picture p0
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+    
+Picture p1
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+    
+Hotspot m0
+    Attributes
+        Scope            : local
+        Dragging         : 0
+        Send Component ID: disabled
+    
+    Events
+        Touch Press Event
+            sys2=sys2+1
+            sys2%=10
+            //n0.val=sys2
+            if(sys2==9)
+            {
+                page pageTest
+            }
+        
+Timer tm0
+    Attributes
+        Scope      : local
+        Period (ms): 200
+        Enabled    : yes
+    
+    Events
+        Timer Event
+            p0.pic+=1
+            //tMsg1.picc=p0.pic
+            //tMsg3.picc=p0.pic
+            if(p0.pic==112&&n0.val<1)
+            {
+                p0.pic=101
+                n0.val=n0.val+1
+            }
+            if(p0.pic==112&&n0.val==1)
+            {
+                tm0.en=0
+                tm1.en=1
+            }
+            //vis tMsg1,1
+            //vis tMsg3,1
+        
+Timer tm1
+    Attributes
+        Scope      : local
+        Period (ms): 50
+        Enabled    : no
+    
+    Events
+        Timer Event
+            tm1.en=0
+            page pageStartup
+        
