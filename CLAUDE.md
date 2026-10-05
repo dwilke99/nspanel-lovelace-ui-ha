@@ -61,6 +61,7 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 - Transport ist in beiden Linien gleich: Backend sendet an `cmnd/<topic>/CustomSend`, das Display antwortet auf `tele/<topic>/RESULT` als `{"CustomRecv":"..."}`.
 - Startmeldung der HA-Firmware: `event,startup,53,eu`. Startmeldung der ioBroker-Firmware 5.0.0: `event,startup,59,eu,5.0.0`.
 - Firmware 61 kennt zusätzliche Seiten (u. a. `screensaver3`, `cardGrid3`, `cardSchedule`, `cardThermo2`, `popupLight2`, `popupShutter2`, `popupSlider`) und das Event `buttonPress3` für langen Druck. Bei `dimmode` liest sie ein Feld weniger als 53, `popupLightNew` ist entfallen. Details und die nötigen Backend-Anpassungen stehen in `fork/protokollvergleich-53-61.md`.
+- Firmware 61 hat zwei Licht-Popups: `popupLight` (dünne waagerechte Regler, Eintragstyp `light`) und `popupLight2` (großer senkrechter Helligkeitsregler, Eintragstyp `light2`). Der Fork sendet `light2`, wenn in der Panel-Konfiguration `featureExperimentalSliders: true` steht.
 - Firmware 61 ist Release 5.1.1. Belegt durch `fork/n2t-out-61/pageStartup.txt` (`tVersion` = 61, `tRelease` = 5.1.1) und `ioBroker/NsPanelTs.ts` (`desired_display_firmware_version = 61`, `tft_version = 'v5.1.1'`).
 - Textauszüge der Firmware 61 liegen unter `fork/n2t-out-61/`, Herkunft in `fork/README.md`. Der Vergleich der Nachrichtenformate 53 gegen 61 steht in `fork/protokollvergleich-53-61.md`.
 
@@ -75,9 +76,18 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 - `fork/n2t-out-61/*.txt`: dasselbe für die Ziel-Firmware 61. `diff HMI/n2t-out/X.txt fork/n2t-out-61/X.txt` zeigt, was sich an einer Seite geändert hat.
 - `ioBroker/NsPanelTs.ts` und ticakis Adapter (`src/lib/pages/`): funktionierende Backends für Firmware 61, nützlich als Vorlage für Nachrichtenformate.
 
-## 4. Offene Fehler im aktuellen Betrieb
+## 4. Stand am Panel und offene Fehler
 
-### Helligkeitsregler im Licht-Popup fehlt (ungeklärt)
+### Betriebsstand seit 5. Oktober 2026
+
+- Das Panel läuft mit Firmware 61 (5.1.1), Berry-Treiber 9 von joBr99 und diesem Fork über HACS.
+- Am Panel bestätigt: Startmeldung `event,startup,61,eu,5.1.1`, Versions-Check ohne Update-Dialog, Bildschirmschoner, `cardEntities`, Zeilenschalter, `popupLight` mit Schalter und Helligkeitsregler, Rückkehr in den Bildschirmschoner.
+- Noch nicht am Panel geprüft: Farbtemperatur-Regler, Farbrad, `popupLight2`, alle übrigen Karten.
+- `cardEntities` sendet in 61 bei jedem Seitenaufbau `event,buttonPress2,,button`. Das Backend ignoriert es, im Log steht dann ein Tastendruck mit leerer Entität.
+
+### Helligkeitsregler im Licht-Popup fehlte unter Firmware 53 (erledigt durch 61)
+
+- Unter Firmware 61 erscheint der Regler, belegt durch ein Foto vom 5. Oktober 2026. Die Ursache unter 53 wurde nicht mehr geklärt. Die folgenden Punkte sind der Stand von damals.
 
 - Dirk meldet: Beim Antippen von „Ankleide" erscheint im Popup kein Schieberegler.
 - Die Entität ist eine Hue-Raumgruppe mit `supported_color_modes: [brightness]`. Eingeschaltet meldet sie Helligkeit 127.
@@ -98,12 +108,15 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 - **`secrets.yaml` darf keine eingerückten Zeilen haben.** Sonst meldet AppDaemon nur „Configuration file must be a dictionary".
 - **`FlashNextion` einzeln senden.** Zusammen mit einem `Backlog`, das auf `Restart 1` endet, geht der Befehl verloren.
 - **Flash-Fortschritt** kommt auf `tele/<topic>/RESULT` als `{"Flashing":{"complete": N, ...}}`. Der Flash der HA-Firmware dauerte rund acht Minuten.
+- **Der Flash kann bei 99 % hängen bleiben.** Beim ersten Flash der 61 kam nach 99 % nichts mehr, das Display hatte danach keine Seite geladen (`Nextion sendme` antwortete mit Seite 255) und schickte keine Startmeldung. Ein Neustart von Tasmota und ein zweites `FlashNextion` mit derselben URL setzten bei 85 % fort und waren nach gut einer Minute fertig.
+- **Ohne laufendes Backend sieht niemand die Meldungen des Panels.** Der Dienst `mqtt.dump` von Home Assistant schreibt sie für eine gewählte Dauer in `mqtt_dump.txt` im Konfigurationsordner, allerdings erst am Ende der Dauer.
 - **HACS legt den Installationsordner nach dem Repository-Namen an** (`appdaemon/apps/<repo-name>/`). Original und Fork dürfen nicht gleichzeitig installiert sein, sonst liegt dasselbe Modul doppelt vor.
 - **Die AppDaemon-Konfiguration liegt seit Add-on-Version 15 außerhalb des HA-Konfigurationsordners**, unter `/addon_configs/a0d7b954_appdaemon/`. In `appdaemon.yaml` muss `app_dir` auf `/homeassistant/appdaemon/apps/` zeigen.
 
 ## 6. Arbeitsweise
 
 - **Claude Code in der Cloud hat keinen Zugriff auf Dirks Home Assistant oder das Panel.** Es sieht nur das Repository. Logs lesen, AppDaemon neu starten und Flashen laufen über einen separaten Chat in der Claude-App, der mit Dirks Rechner verbunden ist.
+- **Der Betriebs-Chat hat seit 5. Oktober 2026 ebenfalls Schreibzugriff auf dieses Repository.** Kleine Änderungen, die sofort am Panel getestet werden sollen, entstehen dort. Auch sie laufen über einen eigenen Zweig und einen Pull Request.
 - **Ablauf pro Änderung:**
   1. Kurze Notiz, was sich ändern soll.
   2. Umsetzung in einem eigenen Zweig, Pull Request in den Fork.
@@ -134,4 +147,6 @@ Nach jeder Änderung am Backend:
 2. ~~**Claude Code, erste Aufgaben im Fork:** diese Datei als `CLAUDE.md` ablegen, `hacs.json` mit eigenem Anzeigenamen versehen, im README kenntlich machen, dass es ein persönlicher Fork ohne Support ist.~~ Erledigt.
 3. ~~**Protokollvergleich** 53 gegen 61, Seite für Seite.~~ Erledigt, siehe `fork/protokollvergleich-53-61.md`.
 4. **Entscheidung** über den Umfang auf Basis dieser Liste. Die Zielversion 61 steht fest.
-5. **Betriebsseite (separater Chat):** HACS auf den Fork umstellen, das Regler-Problem klären, die Diagnose-Protokollierung (`quiet: false`) wieder abschalten, später die Firmware 61 zum Test flashen.
+5. ~~**Betriebsseite (separater Chat):** HACS auf den Fork umstellen, das Regler-Problem klären, die Firmware 61 flashen.~~ Erledigt am 5. Oktober 2026.
+6. **Am Panel prüfen:** `popupLight2` mit `featureExperimentalSliders: true` (Aussehen per Foto), Farbrad an einer Farblampe, Farbtemperatur-Regler.
+7. **Betriebsseite:** die Diagnose-Protokollierung (`quiet: false`) wieder abschalten, sobald die Tests durch sind.
