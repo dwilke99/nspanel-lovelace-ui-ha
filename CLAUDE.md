@@ -60,7 +60,7 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 
 - Transport ist in beiden Linien gleich: Backend sendet an `cmnd/<topic>/CustomSend`, das Display antwortet auf `tele/<topic>/RESULT` als `{"CustomRecv":"..."}`.
 - Startmeldung der HA-Firmware: `event,startup,53,eu`. Startmeldung der ioBroker-Firmware 5.0.0: `event,startup,59,eu,5.0.0`.
-- Die 5.x-Firmware kennt zusätzliche Seitentypen (`screensaver2`, `screensaver3`) und einen zusätzlichen Parameter bei `dimmode` für ein neues Licht-Popup.
+- Firmware 61 kennt zusätzliche Seiten (u. a. `screensaver3`, `cardGrid3`, `cardSchedule`, `cardThermo2`, `popupLight2`, `popupShutter2`, `popupSlider`) und das Event `buttonPress3` für langen Druck. Bei `dimmode` liest sie ein Feld weniger als 53, `popupLightNew` ist entfallen. Details und die nötigen Backend-Anpassungen stehen in `fork/protokollvergleich-53-61.md`.
 - Firmware 61 ist Release 5.1.1. Belegt durch `fork/n2t-out-61/pageStartup.txt` (`tVersion` = 61, `tRelease` = 5.1.1) und `ioBroker/NsPanelTs.ts` (`desired_display_firmware_version = 61`, `tft_version = 'v5.1.1'`).
 - Textauszüge der Firmware 61 liegen unter `fork/n2t-out-61/`, Herkunft in `fork/README.md`. Der Vergleich der Nachrichtenformate 53 gegen 61 steht in `fork/protokollvergleich-53-61.md`.
 
@@ -84,6 +84,7 @@ Alle Angaben in diesem Abschnitt stammen aus den Git-Historien, abgerufen am 5. 
 - Das Backend sendet korrekt, im ausgeschalteten Zustand: `entityUpdateDetail~<id>~~17299~0~0~disable~disable~Color~Farbtemperatur~Helligkeit~disable`. Feld 5 ist die Helligkeit.
 - Laut `HMI/n2t-out/popupLight.txt` blendet die Firmware den Regler nur aus, wenn Feld 5 den Wert `disable` hat. Außerdem verarbeitet das Popup die Nachricht nur, wenn die Entitätskennung mit der des geöffneten Popups übereinstimmt.
 - Nach Datenlage müsste der Regler also erscheinen. Ein Foto oder eine Beschreibung des Popups steht von Dirk noch aus. Der Fehler ist nicht reproduziert.
+- Analyse vom 5. Oktober 2026 (`fork/protokollvergleich-53-61.md`, Abschnitt 10): Beim Öffnen blendet das Popup alle Regler aus, erst die Detailnachricht mit passender ID blendet sie ein. Wahrscheinlichste Ursache ist, dass diese Nachricht nicht beim Popup ankommt. Test: Popup bei eingeschaltetem Licht öffnen. Steht der Schalter im Popup dann auf „aus", kommt die Nachricht nicht an.
 
 ### Farbtemperatur-Regler fehlt (Ursache bekannt, im Fork behoben)
 
